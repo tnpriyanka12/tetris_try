@@ -10,8 +10,8 @@ body{
 .container {
   position: relative;
   display: inline-block;
-  height: 500px;
-  width: 500px;
+  height: 300px;
+  width: 300px;
   background-color: white;
   /*border: 2px solid black;*/
 }

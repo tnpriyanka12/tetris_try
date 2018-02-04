@@ -8,6 +8,9 @@ const TotalGridSize = 30;
 //Single Block
 // block color: '#404040',
 
+let prevTop   = 1;
+let prevRight = 1;
+let prevLeft  = 1;
 
 
 //squareShape
@@ -17,6 +20,27 @@ square : [
 [0,0,0,0],
 [0,1,1,0],
 [0,1,1,0],
+[0,0,0,0]
+],
+
+theLShape : [
+[0,0,0,0],
+[0,1,0,0],
+[0,1,0,0],
+[0,1,1,0]
+],
+
+theOneShape : [
+[0,1,0,0],
+[0,1,0,0],
+[0,1,0,0],
+[0,1,0,0]
+],
+
+theZShape : [
+[1,1,0,0],
+[0,1,1,0],
+[0,0,0,0],
 [0,0,0,0]
 ]
 
@@ -56,22 +80,23 @@ for( let i = 0; i < gridSize; i++ ){
 
 
 
-const createSquare = function () {
+const createShape = function ( shape ) {
+  console.log(`shape is ${shape}`);
 //Making shape from above single Block
-for( let i = 0; i < shapes.square.length; i++ ){
+for( let i = 0; i < shape.length; i++ ){
   $divBlank = $('<div class="sqcol">').attr('class', 'sqcol'+i);
 
-  $('.square').append($divBlank);
+  $('.shape').append($divBlank);
 
     $('.sqcol'+i).css({
-      display: 'inline-block',
-      height: 9*1 + 'px',
-      width: 9*5 + 'px',
+      // display: 'inline-block',
+      // height: 9*1 + 'px',
+      // width: 9*5 + 'px',
       // border: '1px solid green'
 
     });
-  for( let j = 0; j < shapes.square.length; j++ ){
-      if(shapes.square[i][j] == 1){
+  for( let j = 0; j < shape.length; j++ ){
+      if(shape[i][j] == 1){
         console.log(`shape is appended here ${i} ${j}`);
         let $block = $('<div>').css({
           display: 'inline-block',
@@ -109,12 +134,75 @@ for( let i = 0; i < shapes.square.length; i++ ){
 
 }//createSquare
 
+const moveLeft = function(){
+  // prevLeft = $('.square').position().left;
+  if($('.square').position().left <= -9)//reached the bottom
+  return;
+  $('.shape').css({
+    position : 'absolute',
+    left : -prevLeft*9 + 'px'
+  });
+  prevLeft++;
+}
 
+const moveRight = function(){
+  if($('.shape').position().left >= 243)//reached the bottom
+  return;
+  $('.shape').css({
+    position : 'absolute',
+    left : 9*prevRight + 'px'
+  });
+  prevRight++;
+
+}
+
+const moveDown = function(){
+  console.log('prev position is : ', prevTop);
+  if($('.shape').position().top >= 243)//reached the bottom
+  return;
+
+
+  $('.shape').css({
+    position : 'absolute',
+    top : 9*prevTop + 'px'
+  });
+  console.log('curent position is : ', $('.shape').offset().top);
+  prevTop++;
+
+}
+
+
+const moveShape = function(){
+  $('body').on('keydown', function( e ){
+    //Down arrow key
+    if(e.keyCode === 40) {
+    console.log('key pressed');
+    moveDown();
+  }
+  });
+
+  $('body').on('keydown', function( e ){
+    //left arrow key
+    if(e.keyCode === 37) {
+    console.log('key pressed');
+    moveLeft();
+  }
+  });
+
+  $('body').on('keydown', function( e ){
+    //right arrow key
+    if(e.keyCode === 39) {
+    console.log('key pressed');
+    moveRight();
+  }
+  });
+}
 
 
 createGrid(TotalGridSize);
-createSquare();
-
-
+// createShape(shapes.square);
+// createShape(shapes.theOneShape);
+createShape(shapes.theZShape);
+// createShape(shapes.theLShape);
 
 });
